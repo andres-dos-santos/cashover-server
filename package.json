@@ -1,0 +1,19 @@
+{
+  "name": "server",
+  "module": "./src/server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch ./src/server.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "tsx": "^4.19.2"
+  }
+}
