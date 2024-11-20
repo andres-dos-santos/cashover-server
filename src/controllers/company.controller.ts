@@ -11,6 +11,7 @@ import { handleValidationError } from '../utils/handle-validation-error';
 
 const CreateCompanyRequest = z.object({
   name: z.string(),
+  description: z.string(),
   doc: z
     .string()
     .length(14, '"doc" must be a 14 numbers')
@@ -37,7 +38,7 @@ class Company {
         throw new Error(handleValidationError(error.errors));
       }
 
-      const { doc, name } = data;
+      const { doc, name, description } = data;
 
       const companyAlreadyExists = await checksIfTheCompanyHasTheSameDocument(
         doc
@@ -47,7 +48,7 @@ class Company {
         throw new Error('This company already exists.');
       }
 
-      const { id } = await createCompany({ name, doc });
+      const { id } = await createCompany({ name, doc, description });
 
       response.status(201).json({ id });
     } catch (error: any) {
