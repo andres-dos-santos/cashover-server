@@ -1,7 +1,8 @@
 import type { Response, Request, NextFunction } from 'express';
 
 import { createCompany } from '../models/create-company.model';
-import { getCompanyById } from '../models/get-company-by-id.model';
+import { getCompany } from '../models/get-company.model';
+import { getCompanies } from '../models/get-companies.model';
 
 class Company {
   async create(request: Request, response: Response) {
@@ -16,11 +17,11 @@ class Company {
     }
   }
 
-  async get(request: Request, response: Response, next: NextFunction) {
+  async get(request: Request, response: Response) {
     const { id } = request.params;
 
     try {
-      const company = await getCompanyById({ id });
+      const company = await getCompany({ id });
 
       if (!company) {
         response
@@ -29,6 +30,20 @@ class Company {
       }
 
       response.json(company);
+    } catch (error) {
+      response.status(400).json({ message: 'Something went wrong.' });
+    }
+  }
+
+  async all(_: Request, response: Response) {
+    try {
+      const companies = await getCompanies();
+
+      if (!companies) {
+        response.status(400).json({ message: 'Unable to find companies.' });
+      }
+
+      response.json(companies);
     } catch (error) {
       response.status(400).json({ message: 'Something went wrong.' });
     }
