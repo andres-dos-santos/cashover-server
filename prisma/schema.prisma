@@ -10,7 +10,7 @@ datasource db {
 model Company {
   id        String   @id @default(uuid())
   name      String
-  doc       String
+  doc       String  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 

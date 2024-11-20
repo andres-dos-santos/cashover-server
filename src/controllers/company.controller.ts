@@ -3,6 +3,7 @@ import type { Response, Request, NextFunction } from 'express';
 import { createCompany } from '../models/create-company.model';
 import { getCompany } from '../models/get-company.model';
 import { getCompanies } from '../models/get-companies.model';
+import { checksIfTheCompanyHasTheSameDocument } from '../utils/checks-if-the-company-has-the-same-document';
 
 class Company {
   async create(request: Request, response: Response) {
@@ -10,6 +11,12 @@ class Company {
 
     try {
       const { id } = await createCompany({ name, doc });
+
+      const sameDocument = await checksIfTheCompanyHasTheSameDocument(doc);
+
+      if (sameDocument) {
+        response.status(400).json({ message: 'This company already exists.' });
+      }
 
       response.status(201).json({ id });
     } catch (error) {
