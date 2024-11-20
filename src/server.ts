@@ -1,8 +1,11 @@
 import express from 'express';
 
-const app = express();
+import { companyRoutes } from './routes/company.routes';
 
+const app = express();
 app.use(express.json());
+
+app.use(companyRoutes);
 
 app.get('/health', (req, res) => {
   return res.status(200).json({ status: 'Ok!' });
