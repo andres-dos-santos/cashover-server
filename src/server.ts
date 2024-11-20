@@ -1,14 +1,15 @@
-import express from 'express';
+import 'dotenv/config';
+import express, { type Request, type Response } from 'express';
 
-import { companyRoutes } from './routes/company.routes';
+import companyRoutes from './routes/company.routes';
 
 const app = express();
 app.use(express.json());
 
-app.use(companyRoutes);
+app.use('/api/1/', companyRoutes);
 
-app.get('/health', (req, res) => {
-  return res.status(200).json({ status: 'Ok!' });
+app.get('/health', (_: Request, res: Response) => {
+  res.status(200).json({ status: 'Ok!' });
 });
 
 app.listen(3333, () => {
