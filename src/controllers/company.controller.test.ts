@@ -1,5 +1,7 @@
-import { beforeAll, expect, test, vitest } from 'vitest';
+import { beforeAll, expect, test } from 'vitest';
 import * as uuid from 'uuid';
+
+import { baseURL } from '../constants/base-url';
 
 import { prisma } from '../db/prisma';
 
@@ -9,7 +11,7 @@ const company = {
 };
 
 async function createCompany() {
-  const response = await fetch('http://localhost:3333/api/1/company', {
+  const response = await fetch(baseURL + 'company', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(company),
@@ -20,19 +22,24 @@ async function createCompany() {
   return { data, status: response.status };
 }
 
-beforeAll(async () => {
-  await prisma.company.deleteMany();
-
-  await createCompany();
-});
-
 async function getCompanies() {
-  const response = await fetch('http://localhost:3333/api/1/companies');
+  const response = await fetch(baseURL + 'companies');
 
   const data = await response.json();
 
   return { data, status: response.status };
 }
+
+beforeAll(async () => {
+  await prisma.company.deleteMany();
+});
+
+test('deve criar uma empresa', async () => {
+  const { data, status } = await createCompany();
+
+  expect(status).toBe(201);
+  expect(uuid.validate(data.id)).toBeTruthy();
+});
 
 test('deve dar erro ao tentar criar uma empresa', async () => {
   const { data, status } = await createCompany();
@@ -45,10 +52,5 @@ test('deve buscar todas as empresas', async () => {
   const { data, status } = await getCompanies();
 
   expect(status).toBe(200);
-  expect(data).toBe([
-    {
-      id: uuid.validate(data[0].id),
-      ...company,
-    },
-  ]);
+  expect(data).toHaveLength(1);
 });
