@@ -10,11 +10,11 @@ import { checksIfTheCompanyHasTheSameDocument } from '../utils/checks-if-the-com
 import { handleValidationError } from '../utils/handle-validation-error';
 
 const CreateCompanyRequest = z.object({
-  name: z.string(),
-  description: z.string(),
+  name: z.string({ required_error: 'cannot be empty' }),
+  description: z.string({ required_error: 'cannot be empty' }),
   doc: z
     .string()
-    .length(14, '"doc" must be a 14 numbers')
+    .length(14, '[doc] - must be a 14 numbers')
     .transform((doc, context) => {
       if (/\D/.test(doc)) {
         context.addIssue({
