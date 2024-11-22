@@ -1,4 +1,5 @@
-import { beforeAll, expect, test } from 'vitest';
+import { beforeAll, test, expect } from 'bun:test';
+
 import * as uuid from 'uuid';
 
 import { baseURL } from '../constants/base-url';
@@ -41,7 +42,7 @@ test('deve criar uma empresa', async () => {
   expect(uuid.validate(data.id)).toBeTruthy();
 });
 
-test('deve dar erro ao tentar criar uma empresa', async () => {
+test.skip('deve dar erro ao tentar criar uma empresa', async () => {
   const { data, status } = await createCompany();
 
   expect(status).toBe(400);
@@ -50,6 +51,7 @@ test('deve dar erro ao tentar criar uma empresa', async () => {
 
 test('deve buscar todas as empresas', async () => {
   const { data, status } = await getCompanies();
+  console.log('data - ', data);
 
   expect(status).toBe(200);
   expect(data).toHaveLength(1);

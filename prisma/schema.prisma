@@ -14,21 +14,19 @@ model Company {
   doc         String   @unique
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
-
-  group   Group?  @relation(fields: [groupId], references: [id])
-  groupId String?
+  groupId     String?
+  group       Group?   @relation(fields: [groupId], references: [id])
 
   @@map("companies")
 }
 
 model Group {
-  id           String @id @default(uuid())
-  name         String @unique
+  id           String         @id @default(uuid())
+  name         String         @unique
   shortName    String
   passwordHash String
-
-  refreshToken RefreshToken[]
   companies    Company[]
+  refreshToken RefreshToken[]
 
   @@map("groups")
 }
@@ -36,9 +34,8 @@ model Group {
 model RefreshToken {
   id        String @id @default(uuid())
   expiresIn Int
-
-  group   Group  @relation(fields: [groupId], references: [id])
-  groupId String
+  groupId   String
+  group     Group  @relation(fields: [groupId], references: [id])
 
   @@map("refreshToken")
 }

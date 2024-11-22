@@ -3,15 +3,13 @@
   "module": "./src/server.ts",
   "type": "module",
   "scripts": {
-    "dev": "tsx --watch ./src/server.ts",
-    "test": "vitest"
+    "dev": "tsx --watch ./src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bun": "latest",
     "@types/express": "^5.0.0",
-    "prisma": "^5.22.0",
-    "vitest": "^2.1.5"
+    "prisma": "^5.22.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
