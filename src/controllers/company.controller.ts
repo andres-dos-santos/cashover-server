@@ -10,10 +10,11 @@ import { checksIfTheCompanyHasTheSameDocument } from '../utils/checks-if-the-com
 import { handleValidationError } from '../utils/handle-validation-error';
 
 const CreateCompanyRequest = z.object({
-  name: z.string(),
+  name: z.string({ required_error: 'cannot be empty' }),
+  description: z.string({ required_error: 'cannot be empty' }),
   doc: z
     .string()
-    .length(14, '"doc" must be a 14 numbers')
+    .length(14, '[doc] - must be a 14 numbers')
     .transform((doc, context) => {
       if (/\D/.test(doc)) {
         context.addIssue({
@@ -32,12 +33,14 @@ class Company {
       request.body
     );
 
+    const { id: groupId } = request.params;
+
     try {
       if (!success) {
         throw new Error(handleValidationError(error.errors));
       }
 
-      const { doc, name } = data;
+      const { doc, name, description } = data;
 
       const companyAlreadyExists = await checksIfTheCompanyHasTheSameDocument(
         doc
@@ -47,7 +50,7 @@ class Company {
         throw new Error('This company already exists.');
       }
 
-      const { id } = await createCompany({ name, doc });
+      const { id } = await createCompany({ name, doc, description, groupId });
 
       response.status(201).json({ id });
     } catch (error: any) {
