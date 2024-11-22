@@ -15,6 +15,9 @@ model Company {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 
+  group   Group?  @relation(fields: [groupId], references: [id])
+  groupId String?
+
   @@map("companies")
 }
 
@@ -25,6 +28,7 @@ model Group {
   passwordHash String
 
   refreshToken RefreshToken[]
+  companies    Company[]
 
   @@map("groups")
 }

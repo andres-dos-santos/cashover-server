@@ -7,16 +7,19 @@ import authenticationRoutes from './routes/authentication.routes';
 import groupRoutes from './routes/group.routes';
 import refreshTokenRoutes from './routes/refresh-token.routes';
 
+import { ensureAuthenticated } from './middlewares/ensure-authenticated';
+
 const app = express();
 app.use(express.json());
 
-app.use(
-  '/api/1/',
-  companyRoutes,
-  authenticationRoutes,
-  groupRoutes,
-  refreshTokenRoutes
-);
+app.use((_, res, next) => {
+  console.log('inside middleware');
+  next();
+});
+
+app.use('/api/1/', authenticationRoutes, groupRoutes, refreshTokenRoutes);
+
+app.use('/api/1/', ensureAuthenticated, companyRoutes);
 
 app.get('/health', (_: Request, res: Response) => {
   res.status(200).json({ status: 'Ok!' });
