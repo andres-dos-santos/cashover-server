@@ -9,7 +9,9 @@ class Group {
 
     const group = await getGroup(name);
 
-    if (!!group) throw new Error('Group already exists!');
+    if (!!group) {
+      response.status(400).json({ message: 'Group already exists.' });
+    }
 
     const { id } = await createGroup({ name, password });
 
