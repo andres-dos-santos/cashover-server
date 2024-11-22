@@ -33,6 +33,8 @@ class Company {
       request.body
     );
 
+    const { id: groupId } = request.params;
+
     try {
       if (!success) {
         throw new Error(handleValidationError(error.errors));
@@ -48,7 +50,7 @@ class Company {
         throw new Error('This company already exists.');
       }
 
-      const { id } = await createCompany({ name, doc, description });
+      const { id } = await createCompany({ name, doc, description, groupId });
 
       response.status(201).json({ id });
     } catch (error: any) {

@@ -12,12 +12,7 @@ import { ensureAuthenticated } from './middlewares/ensure-authenticated';
 const app = express();
 app.use(express.json());
 
-app.use((_, res, next) => {
-  console.log('inside middleware');
-  next();
-});
-
-app.use('/api/1/', authenticationRoutes, groupRoutes, refreshTokenRoutes);
+app.use('/api/1/', groupRoutes, authenticationRoutes, refreshTokenRoutes);
 
 app.use('/api/1/', ensureAuthenticated, companyRoutes);
 

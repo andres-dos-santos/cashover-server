@@ -4,7 +4,7 @@ class GenerateTokenProvider {
   async execute(groupId: string) {
     const token = jwt.sign({}, process.env.TOKEN_HASH ?? '', {
       subject: groupId,
-      expiresIn: '60s',
+      expiresIn: process.env.NODE_ENV === 'development' ? '3600s' : '20s',
     });
 
     return token;
