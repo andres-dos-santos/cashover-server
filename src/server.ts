@@ -12,6 +12,12 @@ import { ensureAuthenticated } from './middlewares/ensure-authenticated';
 const app = express();
 app.use(express.json());
 
+app.use((req, _, next) => {
+  console.log(`[${req.method}] / ${req.url}`);
+
+  next();
+});
+
 app.use('/api/1/', groupRoutes, authenticationRoutes, refreshTokenRoutes);
 
 app.use('/api/1/', ensureAuthenticated, companyRoutes);
